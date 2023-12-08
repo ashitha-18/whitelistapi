@@ -25,10 +25,10 @@ usersRouter.get("/:email", async (req: Request, res: Response) => {
 
     try {
         const query = { email: email };
-        const game = await collections.users.findOne(query);
+        const user = await collections.users.findOne(query);
 
-        if (game) {
-            res.status(200).send(game);
+        if (user) {
+            res.status(200).send(user);
         }
     } catch (error) {
         res.status(404).send(`Unable to find matching document with email: ${req.params.email}`);
@@ -39,12 +39,12 @@ usersRouter.get("/:email", async (req: Request, res: Response) => {
 
 usersRouter.post("/", async (req: Request, res: Response) => {
     try {
-        const newGame = req.body as User;
-        const result = await collections.users.insertOne(newGame);
+        const newUser = req.body as User;
+        const result = await collections.users.insertOne(newUser);
 
         result
-            ? res.status(201).send(`Successfully created a new game with id ${result.insertedId}`)
-            : res.status(500).send("Failed to create a new game.");
+            ? res.status(201).send(`Successfully created a new user with id ${result.insertedId}`)
+            : res.status(500).send("Failed to create a new user.");
     } catch (error) {
         console.error(error);
         res.status(400).send(error.message);
@@ -55,14 +55,14 @@ usersRouter.put("/:id", async (req: Request, res: Response) => {
     const id = req?.params?.id;
 
     try {
-        const updatedGame = req.body;
+        const updatedUser = req.body;
         const query = { _id: new ObjectId(id) };
         // $set adds or updates all fields
-        const result = await collections.users.updateOne(query, { $set: updatedGame });
+        const result = await collections.users.updateOne(query, { $set: updatedUser });
 
         result
-            ? res.status(200).send(`Successfully updated game with id ${id}`)
-            : res.status(304).send(`Game with id: ${id} not updated`);
+            ? res.status(200).send(`Successfully updated user with id ${id}`)
+            : res.status(304).send(`user with id: ${id} not updated`);
     } catch (error) {
         console.error(error.message);
         res.status(400).send(error.message);
@@ -77,11 +77,11 @@ usersRouter.delete("/:id", async (req: Request, res: Response) => {
         const result = await collections.users.deleteOne(query);
 
         if (result && result.deletedCount) {
-            res.status(202).send(`Successfully removed game with id ${id}`);
+            res.status(202).send(`Successfully removed user with id ${id}`);
         } else if (!result) {
-            res.status(400).send(`Failed to remove game with id ${id}`);
+            res.status(400).send(`Failed to remove user with id ${id}`);
         } else if (!result.deletedCount) {
-            res.status(404).send(`Game with id ${id} does not exist`);
+            res.status(404).send(`user with id ${id} does not exist`);
         }
     } catch (error) {
         console.error(error.message);

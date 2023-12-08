@@ -23,7 +23,7 @@ export async function connectToDatabase() {
     // Connect to the collection with the specific name from .env, found in the database previously specified
     const usersCollection = db.collection<User>(process.env.USERS_COLLECTION_NAME);
 
-    // Persist the connection to the Games collection
+    // Persist the connection to the user collection
     collections.users = usersCollection;
 
     console.log(
@@ -31,7 +31,7 @@ export async function connectToDatabase() {
     );
 }
 
-// Update our existing collection with JSON schema validation so we know our documents will always match the shape of our Game model, even if added elsewhere.
+// Update our existing collection with JSON schema validation so we know our documents will always match the shape of our User model, even if added elsewhere.
 // For more information about schema validation, see this blog series: https://www.mongodb.com/blog/post/json-schema-validation--locking-down-your-model-the-smart-way
 async function applySchemaValidation(db: mongoDB.Db) {
     const jsonSchema = {
