@@ -3,7 +3,7 @@ import { connectToDatabase } from "./services/database.service";
 import { usersRouter } from "./routes/users.router";
 
 const app = express();
-const port = 8080; // default port to listen
+const port = 3000; // default port to listen
 
 connectToDatabase()
     .then(() => {

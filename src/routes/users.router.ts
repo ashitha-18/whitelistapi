@@ -2,9 +2,13 @@ import express, { Request, Response } from "express";
 import { ObjectId } from "mongodb";
 import { collections } from "../services/database.service";
 import User from "../models/user";
+import { whitelistMiddleware } from "../middleware/middleware";
+
+
 export const usersRouter = express.Router();
 
 usersRouter.use(express.json());
+
 
 usersRouter.get("/", async (_req: Request, res: Response) => {
     try {
@@ -20,8 +24,13 @@ usersRouter.get("/", async (_req: Request, res: Response) => {
 // Example route: http://localhost:8080/users/emailid
 
 // to retrieve the users information based on an email
-usersRouter.get("/:email", async (req: Request, res: Response) => {
+
+
+usersRouter.get("/:email",whitelistMiddleware, async (req: Request, res: Response) => {
+    
     const email = req?.params?.email;
+    console.log('Request object:', req?.params?.email);
+   
 
     try {
         const query = { email: email };
@@ -37,7 +46,7 @@ usersRouter.get("/:email", async (req: Request, res: Response) => {
 
 
 
-usersRouter.post("/", async (req: Request, res: Response) => {
+usersRouter.post("/", whitelistMiddleware, async (req: Request, res: Response) => {
     try {
         const newUser = req.body as User;
         const result = await collections.users.insertOne(newUser);
